@@ -55,14 +55,16 @@ pipeline {
     }
     post {
         success {
-            emailext to: 'abd.marbouh@gmail.com',
-                subject: 'Build Success',
-                body: 'Le build a été complété avec succès.'
+            slackSend channel: '#dev',
+                      message: "Successful completion of ${env.JOB_NAME}",
+                      teamDomain: 'gestionbibliotheque',
+                      tokenCredentialId: 'slack1'
         }
         failure {
-            emailext to: 'abd.marbouh@gmail.com',
-                subject: 'Build Failed',
-                body: 'Le build a échoué.'
+            slackSend channel: '#dev',
+                      message: "Build failed for ${env.JOB_NAME}",
+                      teamDomain: 'gestionbibliotheque',
+                      tokenCredentialId: 'slack1'
         }
     }
 }
