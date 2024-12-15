@@ -3,7 +3,7 @@ pipeline {
     environment {
         MAVEN_HOME = tool 'Maven'
         // Définir les variables SonarQube
-        SONAR_CREDS = credentials('GestionBibliotheque') // ID de vos credentials Jenkins
+        // Supprimer SONAR_CREDS du bloc environment
     }
     stages {
         stage('Checkout') {
@@ -22,24 +22,18 @@ pipeline {
             }
         }
         stage('Quality Analysis') {
-            
-
-            // steps {
-            //     withSonarQubeEnv('SonarQube') {
-            //         sh '${MAVEN_HOME}/bin/mvn sonar:sonar'
-            //     }
-            // }
-
-             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh """
-                        ${MAVEN_HOME}/bin/mvn sonar:sonar \
-                        -Dsonar.host.url=${SONAR_SERVER} \
-                        -Dsonar.login=${SONAR_TOKEN} \
-                        -Dsonar.projectKey=GestionBibliotheque-Jenkins \
-                        -Dsonar.projectName='GestionBibliotheque-Jenkins' \
-                        -Dsonar.java.binaries=target/classes
-                    """
+            steps {
+                withCredentials([string(credentialsId: 'GestionBibliotheque', variable: 'SONAR_TOKEN')]) {
+                    withSonarQubeEnv('SonarQube') {
+                        sh """
+                            ${MAVEN_HOME}/bin/mvn sonar:sonar \
+                            -Dsonar.host.url=${SONAR_SERVER} \
+                            -Dsonar.login=${SONAR_TOKEN} \
+                            -Dsonar.projectKey=GestionBibliotheque-Jenkins \
+                            -Dsonar.projectName='GestionBibliotheque-Jenkins' \
+                            -Dsonar.java.binaries=target/classes
+                        """
+                    }
                 }
                 // Attendre le résultat de la Quality Gate
                 timeout(time: 2, unit: 'MINUTES') {
