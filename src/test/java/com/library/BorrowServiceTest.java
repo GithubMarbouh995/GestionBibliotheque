@@ -7,6 +7,7 @@ import com.library.model.Student;
 import com.library.service.BorrowService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,6 +29,12 @@ class BorrowServiceTest {
         // Ajouter des livres
         bookDAO.addBook(new Book(1, "Java Programming", "John Doe", true));
         bookDAO.addBook(new Book(2, "Advanced Java", "Jane Doe", true));
+    }
+
+    @AfterEach
+    void tearDown() {
+        bookDAO.getAllBooks().clear();
+        studentDAO.getAllStudents().clear();
     }
 
     @Test

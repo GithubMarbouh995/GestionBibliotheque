@@ -5,6 +5,7 @@ import com.library.model.Book;
 import com.library.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +17,11 @@ class BookServiceTest {
     void setUp() {
         bookDAO = new BookDAO();
         bookService = new BookService(bookDAO);
+    }
+
+    @AfterEach
+    void tearDown() {
+        bookDAO.getAllBooks().clear();
     }
 
     @Test

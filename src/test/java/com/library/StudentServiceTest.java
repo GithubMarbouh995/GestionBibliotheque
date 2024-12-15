@@ -5,6 +5,7 @@ import com.library.model.Student;
 import com.library.service.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +17,11 @@ class StudentServiceTest {
     void setUp() {
         studentDAO = new StudentDAO();
         studentService = new StudentService(studentDAO);
+    }
+
+    @AfterEach
+    void tearDown() {
+        studentDAO.getAllStudents().clear();
     }
 
     @Test
