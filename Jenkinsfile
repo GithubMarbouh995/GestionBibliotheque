@@ -55,16 +55,10 @@ pipeline {
     }
     post {
         success {
-            slackSend channel: '#dev',
-                      message: "Successful completion of ${env.JOB_NAME}",
-                      teamDomain: 'gestionbibliotheque',
-                      tokenCredentialId: 'slack1'
+            slackSend message: "Successful completion of ${env.JOB_NAME}"
         }
         failure {
-            slackSend channel: '#dev',
-                      message: "Build failed for ${env.JOB_NAME}",
-                      teamDomain: 'gestionbibliotheque',
-                      tokenCredentialId: 'slack1'
+            slackSend message: "Build failed for ${env.JOB_NAME}"
         }
     }
 }
