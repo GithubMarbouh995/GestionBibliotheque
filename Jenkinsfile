@@ -1,7 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.8.7-eclipse-temurin-17'  // Image Maven avec JDK 17
+        }
+    }
     environment {
-        MAVEN_HOME = tool 'Maven'
+        // Supprimer MAVEN_HOME car Maven est déjà dans le PATH
         // Définir les variables SonarQube
         // Supprimer SONAR_CREDS du bloc environment
     }
@@ -13,12 +17,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh '${MAVEN_HOME}/bin/mvn clean compile'
+                sh 'mvn clean compile -Dmaven.compiler.source=17 -Dmaven.compiler.target=17'
             }
         }
         stage('Test') {
             steps {
-                sh '${MAVEN_HOME}/bin/mvn test'
+                sh 'mvn test -Dmaven.compiler.source=17 -Dmaven.compiler.target=17'
             }
         }
         stage('Quality Analysis') {
@@ -26,7 +30,10 @@ pipeline {
                 withCredentials([string(credentialsId: 'GestionBibliotheque', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
                         sh """
-                            ${MAVEN_HOME}/bin/mvn sonar:sonar \
+                            mvn sonar:sonar \
+                            -Dmaven.compiler.source=17 \
+                            -Dmaven.compiler.target=17 \
+                            -Dsonar.java.source=17 \
                             -Dsonar.host.url=${SONAR_SERVER} \
                             -Dsonar.login=${SONAR_TOKEN} \
                             -Dsonar.projectKey=GestionBibliotheque-Jenkins \
