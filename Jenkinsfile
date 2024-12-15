@@ -1,14 +1,11 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.7-eclipse-temurin-17'  // Image Maven avec JDK 17
-        }
+    agent any
+    
+    tools {
+        maven 'Maven'
+        jdk 'JDK17'
     }
-    environment {
-        // Supprimer MAVEN_HOME car Maven est déjà dans le PATH
-        // Définir les variables SonarQube
-        // Supprimer SONAR_CREDS du bloc environment
-    }
+    
     stages {
         stage('Checkout') {
             steps {
