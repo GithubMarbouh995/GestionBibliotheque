@@ -8,6 +8,7 @@ public class Borrow {
     private Book book;
     private Date borrowDate;
     private Date returnDate;
+    private String member;
 
     // Constructeur complet
     public Borrow(int id, Student student, Book book, Date borrowDate, Date returnDate) {
@@ -19,6 +20,10 @@ public class Borrow {
     }
 
     public Borrow(String name, String title, Date date, Object object) {
+        //TODO Auto-generated constructor stub
+    }
+
+    public Borrow(int id, String member, String book, java.sql.Date borrowDate, java.sql.Date returnDate) {
         //TODO Auto-generated constructor stub
     }
 
@@ -62,4 +67,12 @@ public class Borrow {
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
+
+    public String getMember() {
+        return member;
+    }
+    public void setMember(String member) {
+        this.member = member;
+    }
+
 }

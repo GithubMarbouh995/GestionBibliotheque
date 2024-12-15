@@ -1,6 +1,8 @@
 package com.library.dao;
 
 import com.library.model.Student;
+import com.library.util.DbConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +13,8 @@ public class StudentDAO {
     private final Connection connection;
     private static final Logger LOGGER = Logger.getLogger(StudentDAO.class.getName());
 
-    public StudentDAO(Connection connection) {
-        this.connection = connection;
+    public StudentDAO() throws SQLException {
+        this.connection = DbConnection.getConnection();
     }
 
     public void addStudent(Student student) {

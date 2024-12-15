@@ -1,3 +1,5 @@
+package com.library;
+
 import com.library.service.BorrowService;
 import com.library.service.BookService;
 import com.library.service.StudentService;
@@ -5,11 +7,13 @@ import com.library.model.Book;
 import com.library.model.Student;
 import com.library.model.Borrow;
 import com.library.dao.BorrowDAO;  // Importer BorrowDAO
+
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
         // Création des services

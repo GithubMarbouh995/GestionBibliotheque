@@ -1,6 +1,7 @@
 
 package com.library.dao;
 
+import com.library.model.Book;
 import com.library.model.Borrow;
 import com.library.util.DbConnection;
 
@@ -43,7 +44,7 @@ public void save(Borrow borrow) {
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, borrow.getMember());
-            stmt.setString(2, borrow.getBook());
+            stmt.setString(2, String.valueOf(borrow.getBook()));
             stmt.setDate(3, new java.sql.Date(borrow.getBorrowDate().getTime()));
             stmt.setDate(4, new java.sql.Date(borrow.getReturnDate().getTime()));
             stmt.executeUpdate();
