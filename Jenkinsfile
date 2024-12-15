@@ -55,12 +55,12 @@ pipeline {
     }
     post {
         success {
-            mail to: 'abd.marbouh@gmail.com',
+            emailext to: 'abd.marbouh@gmail.com',
                 subject: 'Build Success',
                 body: 'Le build a été complété avec succès.'
         }
         failure {
-            mail to: 'abd.marbouh@gmail.com',
+            emailext to: 'abd.marbouh@gmail.com',
                 subject: 'Build Failed',
                 body: 'Le build a échoué.'
         }
