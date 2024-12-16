@@ -1,15 +1,12 @@
 pipeline {
     agent any
-
     environment {
         JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
     }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/GithubMarbouh995/GestionBibliotheque.git'
+                git branch: 'main', url: 'https://github.com/GithubMarbouh995/GestionBibliotheque.git'
             }
         }
 
@@ -26,35 +23,34 @@ pipeline {
         }
 
         stage('Quality Analysis') {
-           steps {
-                withCredentials([string(credentialsId: 'GestionBibliotheque-token', variable: 'SONAR_TOKEN')]) {
-                    withSonarQubeEnv('SonarQube') { // Using withSonarQubeEnv for better integration
-                        sh 'mvn clean verify sonar:sonar'  // Combined build and analysis for efficiency
-                     }
+            steps {
+                withCredentials([string(credentialsId: 'GestionBibliotheque-token', variable: 'SONAR_TOKEN')]) { // Still need credentials for SonarQube
+                    withSonarQubeEnv('SonarQube') {  // Make sure "SonarQube" matches your server config
+                        sh 'mvn clean verify sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+                    }
                 }
                 timeout(time: 2, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true // Ensure quality gate checks before proceeding
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Déploiement simulé réussi' // Replace with actual deployment steps
+                // Replace with actual deployment steps
+                echo 'Deployment simulated'  
             }
         }
     }
-
     post {
+        always {
+            cleanWs() 
+        }
         success {
-            slackSend channel: '#your-slack-channel', color: 'good', message: "✅ ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} successful! \nDetails: ${env.BUILD_URL}" // Enhanced Slack notification
+            slackSend channel: '#dev', color: 'good', message: "Pipeline '${env.JOB_NAME}' (#${env.BUILD_NUMBER}) succeeded."
         }
         failure {
-            slackSend channel: '#your-slack-channel', color: 'danger', message: "❌ ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} failed! \nDetails: ${env.BUILD_URL}" // Enhanced Slack notification
+            slackSend channel: '#dev', color: 'danger', message: "Pipeline '${env.JOB_NAME}' (#${env.BUILD_NUMBER}) failed."
         }
-        always {
-          cleanWs()
-        }
-
     }
 }
