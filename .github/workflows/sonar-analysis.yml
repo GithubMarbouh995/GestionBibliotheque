@@ -39,7 +39,6 @@ jobs:
         run: mvn -B verify sonar:sonar 
           -Dsonar.projectKey=GestionBibliotheque 
           -Dsonar.projectName='GestionBibliotheque'
-          -Dsonar.host.url=http://http://143.47.37.105:9000
-          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.host.url=http://143.47.37.105:9000
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          -X
+          --debug
