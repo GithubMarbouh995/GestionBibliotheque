@@ -2,12 +2,11 @@ pipeline {
     agent any
     environment {
         JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
-        SONAR_TOKEN = credentials('GestionBibliotheque-token') // Or use a string credential if preferred
     }
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/GithubMarbouh995/GestionBibliotheque.git'
+                git branch: 'main', url: 'https://github.com/GithubMarbouh995/GestionBibliotheque.git' // Or use credentials if preferred 
             }
         }
         stage('Build') {
@@ -22,25 +21,25 @@ pipeline {
         }
         stage('Quality Analysis') {
             steps {
-                script {
-                    echo '-------- Début de l\'analyse SonarQube --------'
-                    // def mvnHome = tool 'Default Maven' // Replace 'Maven 3' with the name you gave in Global Tool Configuration
-                    // withSonarQubeEnv('SonarQube') {  // Replace 'SonarQube' with the name in your SonarQube server config
-                    //     sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=GestionBibliotheque -Dsonar.login=${env.SONAR_TOKEN}"
-                    // }
-                    echo '-------- Analyse SonarQube terminée --------'
+                withCredentials([string(credentialsId: 'GestionBibliotheque-token', variable: 'SONAR_TOKEN')]) {
+                    withSonarQubeEnv('SonarQube') { 
+                        sh 'mvn clean verify sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+                    }
+                }
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deployment simulated' // Replace with your actual deployment commands
+                echo 'Deployment simulated' // Replace with your deployment logic
             }
         }
     }
     post {
         always {
-            cleanWs()
+            cleanWs() // Now this should work
         }
         success {
             slackSend channel: '#dev', color: 'good', message: "Pipeline '${env.JOB_NAME}' (#${env.BUILD_NUMBER}) succeeded."
