@@ -27,10 +27,8 @@ pipeline {
                         sh """
                             mvn sonar:sonar \
                             -Dsonar.projectKey=GestionBibliotheque-Jenkins \
-                            -Dsonar.projectName='GestionBibliotheque-Jenkins' \
                             -Dsonar.host.url=\${SONAR_SERVER} \
                             -Dsonar.login=\${SONAR_TOKEN} \
-                            -Dsonar.java.binaries=target/classes
                         """
                     }
                 }
