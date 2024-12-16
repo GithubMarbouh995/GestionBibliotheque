@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Quality Analysis') {
            steps {
-                withCredentials([string(credentialsId: 'GestionBibliotheque', variable: 'SONAR_TOKEN')]) {
+                withCredentials([string(credentialsId: 'GestionBibliotheque-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
                         sh """
                             mvn sonar:sonar \
