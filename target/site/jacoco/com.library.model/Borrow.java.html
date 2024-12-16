@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Borrow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mon-projet</a> &gt; <a href="index.source.html" class="el_package">com.library.model</a> &gt; <span class="el_source">Borrow.java</span></div><h1>Borrow.java</h1><pre class="source lang-java linenums">package com.library.model;
+
+import java.util.Date;
+
+public class Borrow {
+    private int id;
+    private Student student;
+    private Book book;
+    private Date borrowDate;
+    private Date returnDate;
+    private String member;
+
+    // Constructeur complet
+<span class="nc" id="L14">    public Borrow(int id, Student student, Book book, Date borrowDate, Date returnDate) {</span>
+<span class="nc" id="L15">        this.id = id;</span>
+<span class="nc" id="L16">        this.student = student;</span>
+<span class="nc" id="L17">        this.book = book;</span>
+<span class="nc" id="L18">        this.borrowDate = borrowDate;</span>
+<span class="nc" id="L19">        this.returnDate = returnDate;</span>
+<span class="nc" id="L20">    }</span>
+
+<span class="nc" id="L22">    public Borrow(String name, String title, Date date, Object object) {</span>
+        //TODO Auto-generated constructor stub
+<span class="nc" id="L24">    }</span>
+
+<span class="nc" id="L26">    public Borrow(int id, String member, String book, java.sql.Date borrowDate, java.sql.Date returnDate) {</span>
+        //TODO Auto-generated constructor stub
+<span class="nc" id="L28">    }</span>
+
+    // Getters et Setters
+    public int getId() {
+<span class="nc" id="L32">        return id;</span>
+    }
+
+    public void setId(int id) {
+<span class="nc" id="L36">        this.id = id;</span>
+<span class="nc" id="L37">    }</span>
+
+    public Student getStudent() {
+<span class="nc" id="L40">        return student;</span>
+    }
+
+    public void setStudent(Student student) {
+<span class="nc" id="L44">        this.student = student;</span>
+<span class="nc" id="L45">    }</span>
+
+    public Book getBook() {
+<span class="nc" id="L48">        return book;</span>
+    }
+
+    public void setBook(Book book) {
+<span class="nc" id="L52">        this.book = book;</span>
+<span class="nc" id="L53">    }</span>
+
+    public Date getBorrowDate() {
+<span class="nc" id="L56">        return borrowDate;</span>
+    }
+
+    public void setBorrowDate(Date borrowDate) {
+<span class="nc" id="L60">        this.borrowDate = borrowDate;</span>
+<span class="nc" id="L61">    }</span>
+
+    public Date getReturnDate() {
+<span class="nc" id="L64">        return returnDate;</span>
+    }
+
+    public void setReturnDate(Date returnDate) {
+<span class="nc" id="L68">        this.returnDate = returnDate;</span>
+<span class="nc" id="L69">    }</span>
+
+    public String getMember() {
+<span class="nc" id="L72">        return member;</span>
+    }
+    public void setMember(String member) {
+<span class="nc" id="L75">        this.member = member;</span>
+<span class="nc" id="L76">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

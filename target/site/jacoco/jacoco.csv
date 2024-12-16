@@ -1,0 +1,12 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+mon-projet,com.library.model,Book,62,0,0,0,27,0,13,0,13,0
+mon-projet,com.library.model,Student,26,0,0,0,12,0,6,0,6,0
+mon-projet,com.library.model,Borrow,66,0,0,0,29,0,15,0,15,0
+mon-projet,com.library.dao,StudentDAO,179,0,8,0,52,0,11,0,7,0
+mon-projet,com.library.dao,BorrowDAO,97,0,2,0,32,0,5,0,4,0
+mon-projet,com.library.dao,BookDAO,302,0,12,0,93,0,13,0,7,0
+mon-projet,com.library,Main,195,0,14,0,60,0,12,0,2,0
+mon-projet,com.library.util,DbConnection,18,0,0,0,5,0,2,0,2,0
+mon-projet,com.library.service,BorrowService,26,0,0,0,13,0,6,0,6,0
+mon-projet,com.library.service,BookService,46,0,2,0,16,0,8,0,7,0
+mon-projet,com.library.service,StudentService,51,0,2,0,16,0,7,0,6,0

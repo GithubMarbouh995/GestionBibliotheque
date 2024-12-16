@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudentDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mon-projet</a> &gt; <a href="index.source.html" class="el_package">com.library.dao</a> &gt; <span class="el_source">StudentDAO.java</span></div><h1>StudentDAO.java</h1><pre class="source lang-java linenums">package com.library.dao;
+
+import com.library.model.Student;
+import com.library.util.DbConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class StudentDAO {
+    private final Connection connection;
+<span class="nc" id="L14">    private static final Logger LOGGER = Logger.getLogger(StudentDAO.class.getName());</span>
+
+<span class="nc" id="L16">    public StudentDAO() throws SQLException {</span>
+<span class="nc" id="L17">        this.connection = DbConnection.getConnection();</span>
+<span class="nc" id="L18">    }</span>
+
+    public void addStudent(Student student) {
+<span class="nc" id="L21">        String query = &quot;INSERT INTO students (id, name) VALUES (?, ?)&quot;;</span>
+<span class="nc" id="L22">        try (PreparedStatement statement = connection.prepareStatement(query)) {</span>
+<span class="nc" id="L23">            statement.setInt(1, student.getId());</span>
+<span class="nc" id="L24">            statement.setString(2, student.getName());</span>
+<span class="nc" id="L25">            statement.executeUpdate();</span>
+<span class="nc" id="L26">        } catch (SQLException e) {</span>
+<span class="nc" id="L27">            LOGGER.log(Level.SEVERE, &quot;Erreur lors de l'ajout de l'étudiant&quot;, e);</span>
+<span class="nc" id="L28">        }</span>
+<span class="nc" id="L29">    }</span>
+
+    public Student getStudentById(int id) {
+<span class="nc" id="L32">        String query = &quot;SELECT * FROM students WHERE id = ?&quot;;</span>
+<span class="nc" id="L33">        try (PreparedStatement statement = connection.prepareStatement(query)) {</span>
+<span class="nc" id="L34">            statement.setInt(1, id);</span>
+<span class="nc" id="L35">            try (ResultSet resultSet = statement.executeQuery()) {</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                if (resultSet.next()) {</span>
+<span class="nc" id="L37">                    return new Student(resultSet.getInt(&quot;id&quot;), resultSet.getString(&quot;name&quot;));</span>
+                } else {
+<span class="nc" id="L39">                    LOGGER.log(Level.WARNING, &quot;Aucun étudiant trouvé avec l'ID : &quot; + id);</span>
+                }
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            }</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L43">            LOGGER.log(Level.SEVERE, &quot;Erreur lors de la récupération de l'étudiant&quot;, e);</span>
+<span class="nc" id="L44">        }</span>
+<span class="nc" id="L45">        return null;</span>
+    }
+
+    public List&lt;Student&gt; getAllStudents() {
+<span class="nc" id="L49">        List&lt;Student&gt; students = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L50">        String query = &quot;SELECT * FROM students&quot;;</span>
+<span class="nc" id="L51">        try (PreparedStatement statement = connection.prepareStatement(query);</span>
+<span class="nc" id="L52">             ResultSet resultSet = statement.executeQuery()) {</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L54">                students.add(new Student(resultSet.getInt(&quot;id&quot;), resultSet.getString(&quot;name&quot;)));</span>
+            }
+<span class="nc" id="L56">        } catch (SQLException e) {</span>
+<span class="nc" id="L57">            LOGGER.log(Level.SEVERE, &quot;Erreur lors de la récupération des étudiants&quot;, e);</span>
+<span class="nc" id="L58">        }</span>
+<span class="nc" id="L59">        return students;</span>
+    }
+
+    public void updateStudent(Student student) {
+<span class="nc" id="L63">        String query = &quot;UPDATE students SET name = ? WHERE id = ?&quot;;</span>
+<span class="nc" id="L64">        try (PreparedStatement statement = connection.prepareStatement(query)) {</span>
+<span class="nc" id="L65">            statement.setString(1, student.getName());</span>
+<span class="nc" id="L66">            statement.setInt(2, student.getId());</span>
+<span class="nc" id="L67">            statement.executeUpdate();</span>
+<span class="nc" id="L68">        } catch (SQLException e) {</span>
+<span class="nc" id="L69">            LOGGER.log(Level.SEVERE, &quot;Erreur lors de la mise à jour de l'étudiant&quot;, e);</span>
+<span class="nc" id="L70">        }</span>
+<span class="nc" id="L71">    }</span>
+
+    public void deleteStudent(int id) {
+<span class="nc" id="L74">        String query = &quot;DELETE FROM students WHERE id = ?&quot;;</span>
+<span class="nc" id="L75">        try (PreparedStatement statement = connection.prepareStatement(query)) {</span>
+<span class="nc" id="L76">            statement.setInt(1, id);</span>
+<span class="nc" id="L77">            statement.executeUpdate();</span>
+<span class="nc" id="L78">        } catch (SQLException e) {</span>
+<span class="nc" id="L79">            LOGGER.log(Level.SEVERE, &quot;Erreur lors de la suppression de l'étudiant&quot;, e);</span>
+<span class="nc" id="L80">        }</span>
+<span class="nc" id="L81">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

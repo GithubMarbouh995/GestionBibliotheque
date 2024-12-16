@@ -17,7 +17,10 @@ public class StudentService {
         this.studentDAO = studentDAO;
     }
 
-    
+    // Setter pour l'injection de dépendance
+    public void setStudentDAO(StudentDAO studentDAO) {
+        this.studentDAO = studentDAO;
+    }
 
     // Ajouter un étudiant
     public void addStudent(Student student) {

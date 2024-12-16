@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BorrowService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mon-projet</a> &gt; <a href="index.source.html" class="el_package">com.library.service</a> &gt; <span class="el_source">BorrowService.java</span></div><h1>BorrowService.java</h1><pre class="source lang-java linenums">package com.library.service;
+
+import com.library.dao.BookDAO;
+import com.library.dao.StudentDAO;
+import com.library.model.Book;
+import com.library.model.Student;
+import com.library.dao.BorrowDAO;
+import com.library.model.Borrow;
+
+public class BorrowService {
+
+    private BorrowDAO borrowDAO;
+    private BookDAO bookDAO;
+    private StudentDAO studentDAO;
+
+    // Constructeur par défaut
+<span class="nc" id="L17">    public BorrowService() {</span>
+<span class="nc" id="L18">    }</span>
+
+    // Constructeur avec BorrowDAO
+<span class="nc" id="L21">    public BorrowService(BorrowDAO borrowDAO) {</span>
+<span class="nc" id="L22">        this.borrowDAO = borrowDAO;</span>
+<span class="nc" id="L23">    }</span>
+
+    // Setters pour l'injection de dépendance
+    public void setBookDAO(BookDAO bookDAO) {
+<span class="nc" id="L27">        this.bookDAO = bookDAO;</span>
+<span class="nc" id="L28">    }</span>
+
+    public void setStudentDAO(StudentDAO studentDAO) {
+<span class="nc" id="L31">        this.studentDAO = studentDAO;</span>
+<span class="nc" id="L32">    }</span>
+
+    // Méthode pour emprunter un livre
+    public void borrowBook(Borrow borrow) {
+        // Sauvegarde de l'emprunt dans la base de données
+<span class="nc" id="L37">        borrowDAO.save(borrow);</span>
+<span class="nc" id="L38">    }</span>
+
+    // Afficher les emprunts (méthode fictive, à adapter)
+    public void displayBorrows() {
+<span class="nc" id="L42">        System.out.println(&quot;Liste des emprunts...&quot;);</span>
+        // Afficher les emprunts enregistrés (adapté selon votre DAO)
+<span class="nc" id="L44">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

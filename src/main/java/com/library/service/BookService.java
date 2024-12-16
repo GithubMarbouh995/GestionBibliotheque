@@ -7,9 +7,13 @@ import java.util.List;
 public class BookService {
     private BookDAO bookDAO;  // Utilisation de DAO pour la gestion des livres
 
-    // Constructeur qui initialise l'objet BookDAO
+    // Constructeur par défaut
     public BookService() {
-        this.bookDAO = new BookDAO();
+    }
+
+    // Setter pour l'injection de dépendance
+    public void setBookDAO(BookDAO bookDAO) {
+        this.bookDAO = bookDAO;
     }
 
     // Ajouter un livre

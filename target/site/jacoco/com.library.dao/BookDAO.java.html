@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mon-projet</a> &gt; <a href="index.source.html" class="el_package">com.library.dao</a> &gt; <span class="el_source">BookDAO.java</span></div><h1>BookDAO.java</h1><pre class="source lang-java linenums">package com.library.dao;
+
+import com.library.model.Book;
+import com.library.util.DbConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L10">public class BookDAO {</span>
+
+    // Ajouter un nouveau livre dans la base de données
+    public void add(Book book) {
+<span class="nc" id="L14">        String sql = &quot;INSERT INTO books (title, author, isbn, published_year) VALUES (?, ?, ?, ?)&quot;;</span>
+<span class="nc" id="L15">        try (Connection connection = DbConnection.getConnection();</span>
+<span class="nc" id="L16">             PreparedStatement statement = connection.prepareStatement(sql)) {</span>
+             
+<span class="nc" id="L18">            statement.setString(1, book.getTitle());</span>
+<span class="nc" id="L19">            statement.setString(2, book.getAuthor());</span>
+<span class="nc" id="L20">            statement.setLong(3, book.getId());</span>
+<span class="nc" id="L21">            statement.setInt(4, book.getYear());</span>
+            
+<span class="nc" id="L23">            int rowsInserted = statement.executeUpdate();</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">            if (rowsInserted &gt; 0) {</span>
+<span class="nc" id="L25">                System.out.println(&quot;Livre inséré avec succès !&quot;);</span>
+            }
+<span class="nc" id="L27">        } catch (SQLException e) {</span>
+<span class="nc" id="L28">            System.err.println(&quot;Erreur lors de l'ajout du livre : &quot; + e.getMessage());</span>
+<span class="nc" id="L29">        }</span>
+<span class="nc" id="L30">    }</span>
+
+    // Récupérer un livre par son ISBN
+    public Book getBookByIsbn(String isbn) {
+<span class="nc" id="L34">        String sql = &quot;SELECT * FROM books WHERE isbn = ?&quot;;</span>
+<span class="nc" id="L35">        Book book = null;</span>
+        
+<span class="nc" id="L37">        try (Connection connection = DbConnection.getConnection();</span>
+<span class="nc" id="L38">             PreparedStatement statement = connection.prepareStatement(sql)) {</span>
+             
+<span class="nc" id="L40">            statement.setString(1, isbn);</span>
+<span class="nc" id="L41">            ResultSet resultSet = statement.executeQuery();</span>
+            
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="nc" id="L44">                book = new Book();</span>
+<span class="nc" id="L45">                book.setId(resultSet.getInt(&quot;id&quot;));</span>
+<span class="nc" id="L46">                book.setTitle(resultSet.getString(&quot;title&quot;));</span>
+<span class="nc" id="L47">                book.setAuthor(resultSet.getString(&quot;author&quot;));</span>
+<span class="nc" id="L48">                book.setPublisher(resultSet.getString(&quot;isbn&quot;));</span>
+<span class="nc" id="L49">                book.setYear(resultSet.getInt(&quot;published_year&quot;));</span>
+            }
+<span class="nc" id="L51">        } catch (SQLException e) {</span>
+<span class="nc" id="L52">            System.err.println(&quot;Erreur lors de la récupération du livre : &quot; + e.getMessage());</span>
+<span class="nc" id="L53">        }</span>
+        
+<span class="nc" id="L55">        return book;</span>
+    }
+    
+    // Récupérer tous les livres
+    public List&lt;Book&gt; getAllBooks() {
+<span class="nc" id="L60">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L61">        String sql = &quot;SELECT * FROM books&quot;;</span>
+        
+<span class="nc" id="L63">        try (Connection connection = DbConnection.getConnection();</span>
+<span class="nc" id="L64">             Statement statement = connection.createStatement();</span>
+<span class="nc" id="L65">             ResultSet resultSet = statement.executeQuery(sql)) {</span>
+             
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L68">                Book book = new Book();</span>
+<span class="nc" id="L69">                book.setId(resultSet.getInt(&quot;id&quot;));</span>
+<span class="nc" id="L70">                book.setTitle(resultSet.getString(&quot;title&quot;));</span>
+<span class="nc" id="L71">                book.setAuthor(resultSet.getString(&quot;author&quot;));</span>
+<span class="nc" id="L72">                book.setPublisher(resultSet.getString(&quot;isbn&quot;));</span>
+<span class="nc" id="L73">                book.setYear(resultSet.getInt(&quot;published_year&quot;));</span>
+<span class="nc" id="L74">                books.add(book);</span>
+<span class="nc" id="L75">            }</span>
+<span class="nc" id="L76">        } catch (SQLException e) {</span>
+<span class="nc" id="L77">            System.err.println(&quot;Erreur lors de la récupération des livres : &quot; + e.getMessage());</span>
+<span class="nc" id="L78">        }</span>
+        
+<span class="nc" id="L80">        return books;</span>
+    }
+
+    public Book getBookById(int id) {
+<span class="nc" id="L84">        String sql = &quot;SELECT * FROM books WHERE id = ?&quot;;</span>
+<span class="nc" id="L85">        Book book = null;</span>
+
+<span class="nc" id="L87">        try (Connection connection = DbConnection.getConnection();</span>
+<span class="nc" id="L88">             PreparedStatement statement = connection.prepareStatement(sql)) {</span>
+
+<span class="nc" id="L90">            statement.setInt(1, id);</span>
+<span class="nc" id="L91">            ResultSet resultSet = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="nc" id="L94">                book = new Book();</span>
+<span class="nc" id="L95">                book.setId(resultSet.getInt(&quot;id&quot;));</span>
+<span class="nc" id="L96">                book.setTitle(resultSet.getString(&quot;title&quot;));</span>
+<span class="nc" id="L97">                book.setAuthor(resultSet.getString(&quot;author&quot;));</span>
+<span class="nc" id="L98">                book.setPublisher(resultSet.getString(&quot;isbn&quot;));</span>
+<span class="nc" id="L99">                book.setYear(resultSet.getInt(&quot;published_year&quot;));</span>
+            }
+<span class="nc" id="L101">        } catch (SQLException e) {</span>
+<span class="nc" id="L102">            System.err.println(&quot;Erreur lors de la récupération du livre : &quot; + e.getMessage());</span>
+<span class="nc" id="L103">        }</span>
+
+<span class="nc" id="L105">        return book;</span>
+    }
+
+    public void delete(int id) {
+<span class="nc" id="L109">        String sql = &quot;DELETE FROM books WHERE id = ?&quot;;</span>
+
+<span class="nc" id="L111">        try (Connection connection = DbConnection.getConnection();</span>
+<span class="nc" id="L112">             PreparedStatement statement = connection.prepareStatement(sql)) {</span>
+
+<span class="nc" id="L114">            statement.setInt(1, id);</span>
+<span class="nc" id="L115">            int rowsDeleted = statement.executeUpdate();</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            if (rowsDeleted &gt; 0) {</span>
+<span class="nc" id="L118">                System.out.println(&quot;Livre supprimé avec succès !&quot;);</span>
+            }
+<span class="nc" id="L120">        } catch (SQLException e) {</span>
+<span class="nc" id="L121">            System.err.println(&quot;Erreur lors de la suppression du livre : &quot; + e.getMessage());</span>
+<span class="nc" id="L122">        }</span>
+<span class="nc" id="L123">    }</span>
+
+    public void update(Book book) {
+<span class="nc" id="L126">        String sql = &quot;UPDATE books SET title = ?, author = ?, isbn = ?, published_year = ? WHERE id = ?&quot;;</span>
+
+<span class="nc" id="L128">        try (Connection connection = DbConnection.getConnection();</span>
+<span class="nc" id="L129">             PreparedStatement statement = connection.prepareStatement(sql)) {</span>
+
+<span class="nc" id="L131">            statement.setString(1, book.getTitle());</span>
+<span class="nc" id="L132">            statement.setString(2, book.getAuthor());</span>
+<span class="nc" id="L133">            statement.setString(3, book.getPublisher());</span>
+<span class="nc" id="L134">            statement.setInt(4, book.getYear());</span>
+<span class="nc" id="L135">            statement.setInt(5, book.getId());</span>
+
+<span class="nc" id="L137">            int rowsUpdated = statement.executeUpdate();</span>
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            if (rowsUpdated &gt; 0) {</span>
+<span class="nc" id="L140">                System.out.println(&quot;Livre mis à jour avec succès !&quot;);</span>
+            }
+<span class="nc" id="L142">        } catch (SQLException e) {</span>
+<span class="nc" id="L143">            System.err.println(&quot;Erreur lors de la mise à jour du livre : &quot; + e.getMessage());</span>
+<span class="nc" id="L144">        }</span>
+<span class="nc" id="L145">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
