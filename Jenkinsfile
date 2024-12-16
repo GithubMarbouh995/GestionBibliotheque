@@ -1,6 +1,8 @@
 pipeline {
     agent any
-    
+    environment {
+        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -19,15 +21,15 @@ pipeline {
             }
         }
         stage('Quality Analysis') {
-            steps {
+           steps {
                 withCredentials([string(credentialsId: 'GestionBibliotheque', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
                         sh """
                             mvn sonar:sonar \
                             -Dsonar.projectKey=GestionBibliotheque-Jenkins \
                             -Dsonar.projectName='GestionBibliotheque-Jenkins' \
-                            -Dsonar.host.url=${SONAR_SERVER} \
-                            -Dsonar.login=${SONAR_TOKEN} \
+                            -Dsonar.host.url=\${SONAR_SERVER} \
+                            -Dsonar.login=\${SONAR_TOKEN} \
                             -Dsonar.java.binaries=target/classes
                         """
                     }
