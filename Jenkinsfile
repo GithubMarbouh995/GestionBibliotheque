@@ -1,25 +1,21 @@
 pipeline {
     agent any
     
-    tools {
-        maven 'Maven'
-        jdk 'JDK17'
-    }
-    
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/GithubMarbouh995/GestionBibliotheque.git'
+                git branch: 'main',
+                    url: 'https://github.com/GithubMarbouh995/GestionBibliotheque.git'
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn clean compile -Dmaven.compiler.source=17 -Dmaven.compiler.target=17'
+                sh 'mvn clean compile'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test -Dmaven.compiler.source=17 -Dmaven.compiler.target=17'
+                sh 'mvn test'
             }
         }
         stage('Quality Analysis') {
@@ -28,18 +24,14 @@ pipeline {
                     withSonarQubeEnv('SonarQube') {
                         sh """
                             mvn sonar:sonar \
-                            -Dmaven.compiler.source=17 \
-                            -Dmaven.compiler.target=17 \
-                            -Dsonar.java.source=17 \
-                            -Dsonar.host.url=${SONAR_SERVER} \
-                            -Dsonar.login=${SONAR_TOKEN} \
                             -Dsonar.projectKey=GestionBibliotheque-Jenkins \
                             -Dsonar.projectName='GestionBibliotheque-Jenkins' \
+                            -Dsonar.host.url=${SONAR_SERVER} \
+                            -Dsonar.login=${SONAR_TOKEN} \
                             -Dsonar.java.binaries=target/classes
                         """
                     }
                 }
-                // Attendre le résultat de la Quality Gate
                 timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
