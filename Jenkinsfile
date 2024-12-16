@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
-        SONAR_TOKEN = credentials('sonar-token') // Or use a string credential if preferred
+        SONAR_TOKEN = credentials('GestionBibliotheque-token') // Or use a string credential if preferred
     }
     stages {
         stage('Checkout') {
