@@ -24,14 +24,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: |
-            ${{ runner.os }}-sonar
-
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -44,5 +36,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=GestionBibliotheque -Dsonar.projectName='GestionBibliotheque' -Dsonar.host.url=${{ env.SONAR_HOST_URL }} -Dsonar.login=${{ env.SONAR_TOKEN }}
+        run: mvn -B verify sonar:sonar 
+          -Dsonar.projectKey=GestionBibliotheque 
+          -Dsonar.projectName='GestionBibliotheque'
+          -Dsonar.host.url=http://http://143.47.37.105:9000
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -X
