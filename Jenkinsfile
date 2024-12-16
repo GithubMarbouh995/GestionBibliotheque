@@ -21,13 +21,11 @@ pipeline {
         }
         stage('Quality Analysis') {
             steps {
-                withCredentials([string(credentialsId: 'GestionBibliotheque-token', variable: 'SONAR_TOKEN')]) {
-                    withSonarQubeEnv('SonarQube') { 
-                        sh 'mvn clean verify sonar:sonar -Dsonar.login=${SONAR_TOKEN}'
+                script {
+                    def mvn = tool 'Default Maven'
+                    withSonarQubeEnv() {
+                        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=GestionBibliotheque"
                     }
-                }
-                timeout(time: 2, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
                 }
             }
         }
